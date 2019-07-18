@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">FavoritesConsumerApp</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_home">Home</string>
+    <string name="movie">Movies</string>
+    <string name="tv_shows">Tv Shows</string>
+    <string name="favorites">Favorites</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="poster_movie">Poster Movie</string>
+    <string name="release_date">Release Date :</string>
+    <string name="action_horror_comedy">Action, Horror, Comedy</string>
+    <string name="favorite_tv">Favorite Tv</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="overview">Overview</string>
+    <string name="original_language">Original Language</string>
+    <string name="favorite">Favorite</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="unfavorite">Unfavorite</string>
+    <string name="no_data">There is no data for now</string>
+    <string name="snackbar_delete">Are you sure want to delete this ?</string>
+    <string name="undo">Undo</string>
+    <string name="add_favorite">has added to your favorite list</string>
+    <string name="delete_favorite">has deleted from your favorite list</string>
+</resources>
