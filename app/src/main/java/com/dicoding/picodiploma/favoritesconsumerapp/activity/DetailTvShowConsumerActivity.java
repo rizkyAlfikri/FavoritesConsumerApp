@@ -15,25 +15,25 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.dicoding.picodiploma.favoritesconsumerapp.R;
-import com.dicoding.picodiploma.favoritesconsumerapp.models.MovieModel;
+import com.dicoding.picodiploma.favoritesconsumerapp.models.TvShowModel;
 import com.dicoding.picodiploma.favoritesconsumerapp.utils.Config;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import butterknife.BindString;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.CONTENT_URI;
-import static com.dicoding.picodiploma.favoritesconsumerapp.utils.ContentValueHelper.getContentValue;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.CONTENT_URI_TV;
+import static com.dicoding.picodiploma.favoritesconsumerapp.utils.ContentValueHelper.getContentValueTv;
 
-public class DetailMovieConsumerActivity extends AppCompatActivity implements View.OnClickListener {
-    public static final String EXTRA_MOVIE = "extra_movie";
-    public static final String EXTRA_POSITION = "extra_position";
-    public static final int REQUEST_MOVIE_UPDATE = 101;
-    public static final int RESULT_MOVIE_ADD = 301;
-    public static final int RESULT_MOVIE_DELETE = 201;
+public class DetailTvShowConsumerActivity extends AppCompatActivity implements View.OnClickListener {
+    public static String EXTRA_TV = "extra_tv";
+    public static String EXTRA_POSITION = "extra_position";
+    public static final int REQUEST_TV_UPDATE = 102;
+    public static final int RESULT_TV_ADD = 302;
+    public static final int RESULT_TV_DELETE = 202;
     private Uri uri;
-    private MovieModel movieModel;
+    private TvShowModel tvShowModel;
     private boolean isFavorite = false;
     @BindView(R.id.txt_overview)
     TextView txtOverview;
@@ -55,48 +55,39 @@ public class DetailMovieConsumerActivity extends AppCompatActivity implements Vi
     ImageView imgPhoto;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindString(R.string.favorite)
-    String favorite;
-    @BindString(R.string.unfavorite)
-    String unfavorite;
-    @BindString(R.string.add_favorite)
-    String addFavorite;
-    @BindString(R.string.delete_favorite)
-    String deleteFavorite;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_movie_consumer);
+        setContentView(R.layout.activity_detail_tv_show_consumer);
         ButterKnife.bind(this);
 
         // cek apakah data sudah ada di database atau belum
         // jika ada, ambil data yang diminta dari database
-        // lalu masukan ke objek MovieModel, dan set isFavorite menjadi true
+        // lalu masukan ke objek TvShowModel, dan set isFavorite menjadi true
         uri = getIntent().getData();
         if (uri != null) {
             Cursor cursor = getContentResolver().query(uri,
                     null, null, null, null);
             if (cursor != null) {
-                if (cursor.moveToFirst()) movieModel = new MovieModel(cursor);
+                if (cursor.moveToFirst()) tvShowModel = new TvShowModel(cursor);
                 cursor.close();
                 isFavorite = true;
             }
         }
 
-        // load data dari movieModel ke View
-        txtOverview.setText(movieModel.getOverview());
-        txtDate.setText(movieModel.getReleaseDate());
-        txtLanguage.setText(movieModel.getOriginalLanguage());
-        txtVoteAverage.setText(String.valueOf(movieModel.getVoteAverage()));
-        txtVoteCount.setText(String.valueOf(movieModel.getVoteCount()));
-        txtPopular.setText(String.valueOf(movieModel.getPopularity()));
-        String urlPhoto = Config.IMAGE_URL_BASE_PATH + movieModel.getPosterPath();
-        collapsingToolbarLayout.setTitle(movieModel.getTitle());
-        Glide.with(this)
-                .load(urlPhoto)
-                .apply(new RequestOptions())
-                .into(imgPhoto);
+        // load data dari tvShowModel ke View
+        txtOverview.setText(tvShowModel.getOverview());
+        txtDate.setText(tvShowModel.getReleaseDate());
+        txtLanguage.setText(tvShowModel.getOriginalLanguage());
+        txtVoteAverage.setText(String.valueOf(tvShowModel.getVoteAverage()));
+        txtVoteCount.setText(String.valueOf(tvShowModel.getVoteCount()));
+        txtPopular.setText(String.valueOf(tvShowModel.getPopularity()));
+        collapsingToolbarLayout.setTitle(tvShowModel.getTitle());
+        String urlPhoto = Config.IMAGE_URL_BASE_PATH + tvShowModel.getPosterPath();
+        Glide.with(this).load(urlPhoto).apply(new RequestOptions()).into(imgPhoto);
+
         imgFavorite.setOnClickListener(this);
 
         //  statement dibawah ini untuk menginfokan apakah data sudah ada di database atau belum
@@ -106,14 +97,14 @@ public class DetailMovieConsumerActivity extends AppCompatActivity implements Vi
                     .load(R.drawable.ic_favorite_black_24dp)
                     .apply(new RequestOptions().override(36, 36))
                     .into(imgFavorite);
-            txtFavorite.setText(unfavorite);
+            txtFavorite.setText(getString(R.string.unfavorite));
         } else {
             // jika data belum ada di database maka jalankan perintah ini
             Glide.with(this)
                     .load(R.drawable.ic_favorite_border_black_24dp)
                     .apply(new RequestOptions().override(36, 36))
                     .into(imgFavorite);
-            txtFavorite.setText(favorite);
+            txtFavorite.setText(getString(R.string.favorite));
         }
     }
 
@@ -122,11 +113,11 @@ public class DetailMovieConsumerActivity extends AppCompatActivity implements Vi
         // jika icon favorite di tekan
         if (v.getId() == R.id.img_favorite) {
             // ambil data dari intent dan masukan ke variabel position
-            // lalu masukan variabel tersebut ke intent yang baru bersamaan data MovieModel
+            // lalu masukan variabel tersebut ke intent yang baru bersamaan data TvShowModel
             int position = getIntent().getIntExtra(EXTRA_POSITION, 0);
             Intent intent = new Intent();
-            intent.putExtra(EXTRA_MOVIE, movieModel);
             intent.putExtra(EXTRA_POSITION, position);
+            intent.putExtra(EXTRA_TV, tvShowModel);
 
             if (!isFavorite) {
                 // jika  data belum ada di database, maka akan menjalankan program dibawah ini
@@ -135,33 +126,36 @@ public class DetailMovieConsumerActivity extends AppCompatActivity implements Vi
                         .apply(new RequestOptions().override(36, 36))
                         .into(imgFavorite);
                 isFavorite = true;
-                txtFavorite.setText(unfavorite);
-                Toast.makeText(this, movieModel.getTitle() + " " + favorite, Toast.LENGTH_SHORT).show();
+                txtFavorite.setText(getString(R.string.unfavorite));
+                Toast.makeText(this, tvShowModel.getTitle() + " " +
+                        getString(R.string.add_favorite), Toast.LENGTH_SHORT).show();
                 isFavorite = true;
 
                 // object movieResult akan di konversi menjadi objet Content Value,
                 // object content value inilah yang nantinya akan dimasukan ke database
-                ContentValues values = getContentValue(movieModel);
-                getContentResolver().insert(CONTENT_URI, values);
+                ContentValues values = getContentValueTv(tvShowModel);
+                getContentResolver().insert(CONTENT_URI_TV, values);
 
                 // Intent yang telah dibuat tadi dikirim ke Favorite Movie dengan Flag Movie RESULT_MOVIE_ADD
                 // statement ini berfungsi untuk animasi penambahan data di recyclerview
-                setResult(RESULT_MOVIE_ADD, intent);
+                setResult(RESULT_TV_ADD, intent);
             } else {
-                // jika  data belum ada di database, maka akan menjalankan program dibawah ini
+                // jika  data belum ada di database, maka akan menjalankan program dibawah in
                 Glide.with(this)
                         .load(R.drawable.ic_favorite_border_black_24dp)
                         .apply(new RequestOptions().override(36, 36))
                         .into(imgFavorite);
-                txtFavorite.setText(favorite);
-                Toast.makeText(this, movieModel.getTitle() + " " + getString(R.string.delete_favorite), Toast.LENGTH_SHORT).show();
+                txtFavorite.setText(getString(R.string.favorite));
+                Toast.makeText(this, tvShowModel.getTitle() + " " +
+                        getString(R.string.delete_favorite), Toast.LENGTH_SHORT).show();
                 isFavorite = false;
+
                 // mendelete data movie yang telah tersimpan di database
                 getContentResolver().delete(uri, null, null);
 
                 // Intent yang telah dibuat tadi dikirim ke Favorite Movie dengan Flag Movie RESULT_MOVIE_DELETE
                 // statement ini berfungsi untuk animasi penghapusan data di recyclerview
-                setResult(RESULT_MOVIE_DELETE, intent);
+                setResult(RESULT_TV_DELETE, intent);
             }
         }
     }

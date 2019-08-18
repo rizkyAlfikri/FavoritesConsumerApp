@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.dicoding.picodiploma.favoritesconsumerapp.R;
-import com.dicoding.picodiploma.favoritesconsumerapp.models.MovieModel;
+import com.dicoding.picodiploma.favoritesconsumerapp.models.TvShowModel;
 import com.dicoding.picodiploma.favoritesconsumerapp.utils.Config;
 
 import java.util.ArrayList;
@@ -21,55 +21,53 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MovieConsumerAdapter extends RecyclerView.Adapter<MovieConsumerAdapter.MovieViewHolder> {
+public class TvShowConsumerAdapter extends RecyclerView.Adapter<TvShowConsumerAdapter.TvViewHolder> {
     private Context context;
-    private ArrayList<MovieModel> listMovie = new ArrayList<>();
+    private ArrayList<TvShowModel> listTv = new ArrayList<>();
 
     // method construct
-    public MovieConsumerAdapter(Context context) {
+    public TvShowConsumerAdapter(Context context) {
         this.context = context;
     }
 
     // set data array list movieModel ke adapter untuk di proses
-    public void setListMovie(ArrayList<MovieModel> listMovie) {
-        this.listMovie.clear();
-        this.listMovie.addAll(listMovie);
+    public void setListTv(ArrayList<TvShowModel> listTv) {
+        this.listTv.clear();
+        this.listTv.addAll(listTv);
         notifyDataSetChanged();
     }
 
     // adapter melakukan notifikasi ketika ada penambahan data
-    public void addItem(MovieModel movieResults) {
-        this.listMovie.add(movieResults);
-        notifyItemInserted(listMovie.size() - 1);
+    public void addItem(TvShowModel tvShowModel) {
+        this.listTv.add(tvShowModel);
+        notifyItemInserted(listTv.size() - 1);
     }
 
     // adapter melakukan notifikasi ketika ada pengurangan data
     public void removeItem(int position) {
-        this.listMovie.remove(position);
+        this.listTv.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, this.listMovie.size());
+        notifyItemRangeChanged(position, this.listTv.size());
     }
 
     @NonNull
     @Override
-    public MovieConsumerAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public TvShowConsumerAdapter.TvViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // inflate file layout yang akan digunakan
         View view = LayoutInflater.from(context).inflate(R.layout.item_favorite_movie, parent, false);
-        return new MovieViewHolder(view);
+        return new TvViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieConsumerAdapter.MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TvShowConsumerAdapter.TvViewHolder holder, int position) {
         // load data movieModel ke view adapter
-        holder.txtTitle.setText(listMovie.get(position).getTitle());
-        holder.txtDate.setText(listMovie.get(position).getReleaseDate());
-        holder.txtRate.setText(String.valueOf(listMovie.get(position).getVoteAverage()));
-        holder.txtGenre.setText(listMovie.get(position).getGenre());
-
-        // load image data
-        String urlPhoto = Config.IMAGE_URL_BASE_PATH + listMovie.get(position).getPosterPath();
+        holder.txtTitle.setText(listTv.get(position).getTitle());
+        holder.txtDate.setText(listTv.get(position).getReleaseDate());
+        holder.txtRate.setText(String.valueOf(listTv.get(position).getVoteAverage()));
+        holder.txtGenre.setText(listTv.get(position).getGenre());
+        String urlImage = Config.IMAGE_URL_BASE_PATH + listTv.get(position).getPosterPath();
         Glide.with(context)
-                .load(urlPhoto)
+                .load(urlImage)
                 .apply(new RequestOptions().override(100, 140))
                 .into(holder.imgPhoto);
     }
@@ -78,14 +76,14 @@ public class MovieConsumerAdapter extends RecyclerView.Adapter<MovieConsumerAdap
     public int getItemCount() {
         // jika listMovie tidak null, maka adapter akan menampilkan semua data yang ada
         // jika listMovie null, maka adapter tidak akan menampilkan data
-        if (listMovie != null) {
-            return listMovie.size();
+        if (listTv != null) {
+            return listTv.size();
         } else {
             return 0;
         }
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class TvViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txt_title)
         TextView txtTitle;
         @BindView(R.id.txt_date)
@@ -96,7 +94,7 @@ public class MovieConsumerAdapter extends RecyclerView.Adapter<MovieConsumerAdap
         TextView txtGenre;
         @BindView(R.id.img_photo)
         ImageView imgPhoto;
-        MovieViewHolder(@NonNull View itemView) {
+        TvViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

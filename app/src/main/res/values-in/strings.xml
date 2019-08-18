@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">FavoritesConsumerApp</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_home">Beranda</string>
+    <string name="movie">Film </string>
+    <string name="tv_shows">Acara TV</string>
+    <string name="favorites">Favorit</string>
+
+    <string name="poster_movie">Poster Gambar</string>
+    <string name="release_date">Tanggal Rilis :</string>
+    <string name="action_horror_comedy">Aksi, Horor, Komedi</string>
+    <string name="favorite_tv">TV Favorit </string>
+    <string name="favorite_movies">Film Favorit</string>
+    <string name="overview">Ikhtisar</string>
+    <string name="original_language">Bahasa Asli</string>
+    <string name="favorite">Favorit</string>
+    <string name="watchlist">Daftar Tonton</string>
+    <string name="unfavorite">Hapus Favorit</string>
+    <string name="no_data">Tidak ada data untuk sekarang ini</string>
+    <string name="snackbar_delete">Apakah anda yakin akan menghapus ini</string>
+    <string name="undo">Batalkan</string>
+    <string name="add_favorite">telah ditambahkan ke daftar favorit and</string>
+    <string name="delete_favorite">telah di hapus dari daftar favorite anda</string>
+    <string name="popularity">Popularitas</string>
+    <string name="delete_item">Satu item telah berhasil dihapus</string>
+    <string name="dicoding_favorite">Dicoding Favorite App</string>
+    <string name="search_movie">Pencarian Film</string>
+    <string name="setting_language">Pengaturan Bahasa</string>
+</resources>
+

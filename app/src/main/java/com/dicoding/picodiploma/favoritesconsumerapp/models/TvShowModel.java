@@ -4,21 +4,21 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.DATE;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.GENRE;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.ID;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.LANGUAGE;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.OVERVIEW;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.POPULAR;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.POSTER;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.TITLE;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.VOTE_AVERAGE;
-import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.MovieColumns.VOTE_COUNT;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.DATE;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.GENRE;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.ID;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.LANGUAGE;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.OVERVIEW;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.POPULAR;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.POSTER;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.TITLE;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.VOTE_AVERAGE;
+import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.TvShowColumns.VOTE_COUNT;
 import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.getColumnInt;
 import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.getColumnString;
 import static com.dicoding.picodiploma.favoritesconsumerapp.db.DatabaseContract.getCoulumnDouble;
 
-public class MovieModel implements Parcelable {
+public class TvShowModel implements Parcelable {
     private String overview;
     private String originalLanguage;
     private String title;
@@ -110,23 +110,9 @@ public class MovieModel implements Parcelable {
         this.genre = genre;
     }
 
-
-    public MovieModel(Cursor cursor) {
-        this.overview = getColumnString(cursor, OVERVIEW);
-        this.originalLanguage = getColumnString(cursor, LANGUAGE);
-        this.title = getColumnString(cursor, TITLE);
-        this.posterPath = getColumnString(cursor, POSTER);
-        this.releaseDate = getColumnString(cursor, DATE);
-        this.voteAverage = getCoulumnDouble(cursor, VOTE_AVERAGE);
-        this.popularity = getCoulumnDouble(cursor, POPULAR);
-        this.id = getColumnInt(cursor, ID);
-        this.voteCount = getColumnInt(cursor, VOTE_COUNT);
-        this.genre = getColumnString(cursor, GENRE);
-    }
-
-    public MovieModel(String overview, String originalLanguage, String title, String posterPath,
-                      String releaseDate, double voteAverage, double popularity, int id,
-                      int voteCount, String genre) {
+    public TvShowModel(String overview, String originalLanguage, String title, String posterPath,
+                       String releaseDate, double voteAverage, double popularity, int id,
+                       int voteCount, String genre) {
 
         this.overview = overview;
         this.originalLanguage = originalLanguage;
@@ -138,6 +124,19 @@ public class MovieModel implements Parcelable {
         this.id = id;
         this.voteCount = voteCount;
         this.genre = genre;
+    }
+
+    public TvShowModel(Cursor cursor) {
+        this.overview = getColumnString(cursor, OVERVIEW);
+        this.originalLanguage = getColumnString(cursor, LANGUAGE);
+        this.title = getColumnString(cursor, TITLE);
+        this.posterPath = getColumnString(cursor, POSTER);
+        this.releaseDate = getColumnString(cursor, DATE);
+        this.voteAverage = getCoulumnDouble(cursor, VOTE_AVERAGE);
+        this.popularity = getCoulumnDouble(cursor, POPULAR);
+        this.id = getColumnInt(cursor, ID);
+        this.voteCount = getColumnInt(cursor, VOTE_COUNT);
+        this.genre = getColumnString(cursor, GENRE);
     }
 
     @Override
@@ -159,7 +158,7 @@ public class MovieModel implements Parcelable {
         dest.writeString(this.genre);
     }
 
-    private MovieModel(Parcel in) {
+    private TvShowModel(Parcel in) {
         this.overview = in.readString();
         this.originalLanguage = in.readString();
         this.title = in.readString();
@@ -172,15 +171,15 @@ public class MovieModel implements Parcelable {
         this.genre = in.readString();
     }
 
-    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
+    public static final Parcelable.Creator<TvShowModel> CREATOR = new Parcelable.Creator<TvShowModel>() {
         @Override
-        public MovieModel createFromParcel(Parcel source) {
-            return new MovieModel(source);
+        public TvShowModel createFromParcel(Parcel source) {
+            return new TvShowModel(source);
         }
 
         @Override
-        public MovieModel[] newArray(int size) {
-            return new MovieModel[size];
+        public TvShowModel[] newArray(int size) {
+            return new TvShowModel[size];
         }
     };
 }
